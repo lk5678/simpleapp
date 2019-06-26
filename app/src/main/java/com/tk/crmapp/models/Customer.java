@@ -37,16 +37,12 @@ public class Customer implements Serializable {
         this.tk_address = tk_address;
     }
 
-    public String getTk_citizenship_tp() {
+    public country_tp getTk_citizenship_tp() {
         return tk_citizenship_tp;
     }
 
-    public void setTk_citizenship_tp(String tk_citizenship_tp) {
-        if(tk_citizenship_tp.indexOf("{\"")>=0) {
-            JSONObject jsonObject = (JSONObject) JSONObject.parseObject(tk_citizenship_tp);
-            this.tk_citizenship_tp = jsonObject.getString("Name");
-        }
-        else
+    public void setTk_citizenship_tp(country_tp tk_citizenship_tp) {
+
             this.tk_citizenship_tp = tk_citizenship_tp;;
     }
 
@@ -65,30 +61,22 @@ public class Customer implements Serializable {
              this.tk_x_risk_value_01 = tk_x_risk_value_01;
     }
 
-    public String getTk_degree_tp() {
+    public tk_degree_tp getTk_degree_tp() {
         return tk_degree_tp;
     }
 
-    public void setTk_degree_tp(String tk_degree_tp) {
-        if(tk_degree_tp.indexOf("{\"")>=0) {
-            JSONObject jsonObject = (JSONObject) JSONObject.parseObject(tk_degree_tp);
-            this.tk_degree_tp = jsonObject.getString("Name");
-        }
-        else
+    public void setTk_degree_tp(tk_degree_tp tk_degree_tp) {
+
             this.tk_degree_tp = tk_degree_tp;
     }
 
-    public String getTk_gender_tp() {
+    public tk_gender_tp getTk_gender_tp() {
         return tk_gender_tp;
     }
 
-    public void setTk_gender_tp(String tk_gender_tp) {
-        if(tk_gender_tp.indexOf("{\"")>=0) {
-            JSONObject jsonObject = (JSONObject) JSONObject.parseObject(tk_gender_tp);
-            this.tk_gender_tp = jsonObject.getString("Value");
-        }
-        else
-            this.tk_gender_tp = tk_gender_tp;;
+    public void setTk_gender_tp(tk_gender_tp tk_gender_tp) {
+
+          this.tk_gender_tp = tk_gender_tp;;
     }
 
     public String getTk_ahph() {
@@ -159,7 +147,7 @@ public class Customer implements Serializable {
             this.tk_org_tp = jsonObject.getString("Name");
         }
         else
-            this.tk_org_tp = tk_degree_tp;
+            this.tk_org_tp = tk_org_tp;
     }
 
     public String getTk_personal_national() {
@@ -188,13 +176,14 @@ public class Customer implements Serializable {
             this.tk_x_occupation_tp = tk_x_occupation_tp;
     }
 
+    private country_tp tk_citizenship_tp;
+    private tk_degree_tp tk_degree_tp;
+    private tk_gender_tp tk_gender_tp;  //性别
 
     private String Name;
     private String AccountId;
     private String tk_address;
-    private String tk_citizenship_tp;
-    private String tk_degree_tp;
-    private String tk_gender_tp;  //性别
+
 
     private String tk_x_risk_value_01;
     private String tk_ahph;//愛好偏好

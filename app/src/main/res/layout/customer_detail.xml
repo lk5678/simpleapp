@@ -52,7 +52,7 @@
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{customer.tk_gender_tp}" />
+                android:text="@{customer.tk_gender_tp.Name}" />
 
             </TableRow>
             <TableRow
@@ -99,7 +99,7 @@
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{customer.tk_degree_tp}" />
+                    android:text="@{customer.tk_degree_tp.name}" />
 
             </TableRow>
             <TableRow
@@ -326,7 +326,29 @@
                     android:layout_height="1px"
                     android:background="#000000" />
             </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+                <TextView
+                    android:id="@+id/textView30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="国籍:" />
+                <TextView
+                    android:id="@+id/textView31"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{customer.tk_citizenship_tp.Name}" />
 
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="#000000" />
+            </TableRow>
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

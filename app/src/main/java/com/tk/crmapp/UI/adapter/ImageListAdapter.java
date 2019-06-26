@@ -29,7 +29,7 @@ public class ImageListAdapter extends ArrayAdapter<Customer> {
         View view = LayoutInflater.from(getContext()).inflate(recourceId,parent,false); //用布局裁剪器(又叫布局膨胀器)，将导入的布局裁剪并且放入到当前布局中
         ImageView imageView = (ImageView)view.findViewById(R.id.IamgeView_List);//从裁剪好的布局里获取ImageView布局ID
         TextView textView = (TextView)view.findViewById(R.id.TextView_List); //从裁剪好的布局里获取TextView布局Id
-        switch ( customer.getTk_degree_tp())
+        switch ( customer.getTk_degree_tp().getName())
         {
             case "黑钻" :
                 imageView.setImageResource(R.drawable.black_diamond_level);
