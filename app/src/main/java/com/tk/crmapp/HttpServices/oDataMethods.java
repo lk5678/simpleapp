@@ -1,5 +1,6 @@
 package com.tk.crmapp.HttpServices;
 
+import com.google.gson.JsonElement;
 import com.tk.crmapp.models.BusinessUnit;
 import com.tk.crmapp.models.Customer;
 import com.tk.crmapp.models.DotNetJson;
@@ -15,6 +16,10 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.RequestBody;
+import retrofit2.Response;
+import retrofit2.adapter.rxjava2.Result;
+import retrofit2.http.Body;
 
 public class oDataMethods {
     /**
@@ -73,5 +78,13 @@ public class oDataMethods {
         oDataStrategy ostrategy = new oDataStrategy(endpoint, token);
 
         oDataApiSubscribe(ostrategy.getoDataService().retrievtk_national(), observer);
+    }
+
+    public static void   createAccount(ProgressObserver<Customer> observer, String  jsonbody, String endpoint, String token)
+    {
+        oDataPostStrategy ostrategy = new oDataPostStrategy(endpoint, token);
+        RequestBody  body = RequestBody.create(okhttp3.MediaType.parse("application/json;charset=UTF-8"),jsonbody);
+        oDataApiSubscribe(ostrategy.getoDataService().createAccount(body),observer);
+
     }
 }

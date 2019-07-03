@@ -2,6 +2,7 @@ package com.tk.crmapp.HttpServices;
 
 
 
+import com.google.gson.JsonElement;
 import com.tk.crmapp.models.BusinessUnit;
 import com.tk.crmapp.models.Customer;
 import com.tk.crmapp.models.DotNetJson;
@@ -14,8 +15,13 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 import retrofit2.Response;
+import retrofit2.adapter.rxjava2.Result;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -50,4 +56,8 @@ public interface oDataService {
     Observable<List<BusinessUnit>> retrieveBusinessUnit();
     @GET("/XRMServices/2011/OrganizationData.svc/tk_nationalSet?$select=tk_code,tk_name,tk_nationalId")
     Observable<List<tk_national>> retrievtk_national();
+
+    @Headers({"Content-type:application/json;charset=UTF-8","Accept:application/json"})
+    @POST("/XRMServices/2011/OrganizationData.svc/AccountSet")
+    Observable<Customer> createAccount(@Body RequestBody jsonbody);
 }

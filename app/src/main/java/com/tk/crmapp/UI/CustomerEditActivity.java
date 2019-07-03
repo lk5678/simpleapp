@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.gson.JsonElement;
 import com.tk.crmapp.HttpServices.ObServerOnErrorListener;
 import com.tk.crmapp.HttpServices.ObserverOnNextListener;
 import com.tk.crmapp.HttpServices.oDataMethods;
@@ -26,6 +27,7 @@ import com.tk.crmapp.models.BusinessUnit;
 import com.tk.crmapp.models.Customer;
 import com.tk.crmapp.models.country_tp;
 import com.tk.crmapp.models.tk_degree_tp;
+import com.tk.crmapp.models.tk_gender_tp;
 import com.tk.crmapp.models.tk_national;
 import com.tk.crmapp.models.tk_prefer;
 import com.tk.crmapp.progress.ProgressObserver;
@@ -33,18 +35,20 @@ import com.tk.crmapp.progress.ProgressObserver;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Response;
 import retrofit2.adapter.rxjava2.HttpException;
+import retrofit2.adapter.rxjava2.Result;
 
 public class CustomerEditActivity extends AppCompatActivity {
 
     private List<country_tp> country_tpList;
     private List<tk_prefer> prefer_tpList;
     private List<tk_degree_tp> degree_tpList;
-    private List<String> sex_tpList;
+    private List<tk_gender_tp> tk_gender_tpList;
     private List<BusinessUnit> businessUnitList;
     private List<tk_national>  tk_nationalList;
     private SimpleApp m_pApp;
-    private Spinner tk_sex_spinner, tk_country_spinner,tk_degree_spinner,tk_prefer_spinner,businessUnit_Spinner,tk_national_Spinner;
+    private Spinner tk_gender_tpspinner, tk_country_spinner,tk_degree_spinner,tk_prefer_spinner,businessUnit_Spinner,tk_national_Spinner;
     private  Customer customer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,13 @@ public class CustomerEditActivity extends AppCompatActivity {
        // Toolbar toolbar = (Toolbar)findViewById(R.id.customereditbar);
       //  setSupportActionBar(toolbar);
       //  getSupportActionBar().setDisplayShowTitleEnabled(false);
+        customer  = new Customer();
+        customer.setName("崔雪莉");
+        CustomerEditBinding binding = DataBindingUtil.setContentView(this,R.layout.customer_edit);
+        binding.setCustomer(customer);
+
+        //在绑定spinner之前最好是做整个view的binding,否则会出现无法解释的问题。
+
         bindSexSpinner();
         m_pApp = (SimpleApp)getApplication();
         country_tpList = new ArrayList<country_tp>();
@@ -66,24 +77,26 @@ public class CustomerEditActivity extends AppCompatActivity {
         getbussionUnitList(m_pApp.getCrmconfig().CRMEndpoint,m_pApp.getCrmconfig().getTOKEN());
         tk_nationalList = new ArrayList<tk_national>();
         gettk_nationalList(m_pApp.getCrmconfig().CRMEndpoint,m_pApp.getCrmconfig().getTOKEN());
-        customer  = new Customer();
 
 
-        customer.setName("崔雪莉");
-        CustomerEditBinding binding = DataBindingUtil.setContentView(this,R.layout.customer_edit);
-        binding.setCustomer(customer);
+
+
 
     }
 
     private void bindSexSpinner()
     {
-        sex_tpList = new ArrayList<String>();
-        sex_tpList.add("男");
-        sex_tpList.add("女");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                 CustomerEditActivity.this, android.R.layout.simple_list_item_1,sex_tpList);
-        tk_sex_spinner = (Spinner)findViewById(R.id.spin_tk_sex_tp);
-        tk_sex_spinner.setAdapter(adapter);
+        tk_gender_tpList = new ArrayList<tk_gender_tp>();
+        tk_gender_tp gtp = new tk_gender_tp();
+        gtp.setValue("300000001");
+        tk_gender_tpList.add(gtp);
+        tk_gender_tp gtp1 = new tk_gender_tp();
+        gtp1.setValue("300000002");
+        tk_gender_tpList.add(gtp1);
+        ArrayAdapter<tk_gender_tp> adapter = new ArrayAdapter<tk_gender_tp>(
+                 CustomerEditActivity.this, android.R.layout.simple_list_item_1,tk_gender_tpList);
+        tk_gender_tpspinner = (Spinner)findViewById(R.id.spin_tk_gender_tp);
+        tk_gender_tpspinner.setAdapter(adapter);
 
 
     }
@@ -335,9 +348,14 @@ public class CustomerEditActivity extends AppCompatActivity {
     public void OnClickSaveButton(View view) {
 
 
-       String sex_tp = this.tk_sex_spinner.getSelectedItem().toString();
+
        tk_degree_tp dtp = (tk_degree_tp)this.tk_degree_spinner.getSelectedItem();
        country_tp ctp = (country_tp)tk_country_spinner.getSelectedItem();
+        tk_gender_tp  gtp = (tk_gender_tp)tk_gender_tpspinner.getSelectedItem();
+        tk_prefer ptp = (tk_prefer)tk_prefer_spinner.getSelectedItem();
+        BusinessUnit bu = (BusinessUnit)businessUnit_Spinner.getSelectedItem();
+        tk_national national = (tk_national)tk_national_Spinner.getSelectedItem();
+
        if(customer.getName().equalsIgnoreCase(""))
        {
            AlertDialog myAlertDialog =new AlertDialog.Builder(CustomerEditActivity.this).setTitle("错误")
@@ -351,5 +369,69 @@ public class CustomerEditActivity extends AppCompatActivity {
                    })
                     .show();//显示此对话框
        }
+       customer.setTk_citizenship_tp(ctp);
+       customer.setTk_degree_tp(dtp);
+       customer.setTk_org_tp(bu);
+       customer.setTk_gender_tp(gtp);
+       customer.setTk_personal_national(national);
+       customer.setTk_prefer(ptp);
+        SavaCustomer(m_pApp.getCrmconfig().CRMEndpoint,m_pApp.getCrmconfig().getTOKEN());
     }
+
+
+
+    public void SavaCustomer(String CRMEndpoint,String  token){
+        ObserverOnNextListener<Customer> nextListener = new ObserverOnNextListener<Customer>() {
+            @Override
+            public void onNext(Customer customer) {
+                if(customer!=null) {
+                    finish();
+                }
+                else
+                {
+                    AlertDialog myAlertDialog =new AlertDialog.Builder(CustomerEditActivity.this).setTitle("错误")
+                            .setMessage("存储客户失败，请重试")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener(){
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    return;
+                                }
+                            })
+                            .show();//显示此对话框
+
+                }
+
+
+            }
+
+        };
+        ObServerOnErrorListener  errorListener = new ObServerOnErrorListener()
+        {
+
+            @Override
+            public void OnError(Throwable e)
+            {
+                Log.e("ERROR",e.getMessage());
+
+                AlertDialog myAlertDialog =new AlertDialog.Builder(CustomerEditActivity.this).setTitle("错误")
+                        .setMessage("存储客户失败，请重试")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                return;
+                            }
+                        })
+                        .show();//显示此对话框
+
+            }
+        };
+        String jsonstr = customer.outputjson();
+        //"substringof('%E4%BA%8E',Name)";
+        oDataMethods.createAccount(new ProgressObserver<Customer>(this, nextListener,errorListener),jsonstr,CRMEndpoint,token);
+
+
+    }
+
 }

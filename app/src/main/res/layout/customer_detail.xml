@@ -218,7 +218,7 @@
                     android:id="@+id/textView21"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{customer.tk_prefer}" />
+                    android:text="@{customer.tk_prefer.Name}" />
 
             </TableRow>
             <TableRow
@@ -266,7 +266,7 @@
                     android:id="@+id/textView25"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{customer.tk_org_tp}" />
+                    android:text="@{customer.tk_org_tp.Name}" />
 
             </TableRow>
             <TableRow
@@ -290,7 +290,7 @@
                     android:id="@+id/textView27"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{customer.tk_personal_national}" />
+                    android:text="@{customer.tk_personal_national.Name}" />
 
             </TableRow>
             <TableRow

@@ -1,9 +1,34 @@
 package com.tk.crmapp.models;
+
+import java.io.Serializable;
+
 //https://crm.tk.com/XRMServices/2011/OrganizationData.svc/tk_nationalSet?$select=tk_code,tk_name,tk_nationalId
-public class tk_national {
+public class tk_national  implements Serializable {
     private String tk_natinoalId;
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+        tk_name = name;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+        tk_natinoalId = id;
+    }
+
     private String tk_code;
     private String tk_name;
+
+    private String Name;
+    private  String Id;
 
     @Override
     public String toString() {
@@ -16,6 +41,7 @@ public class tk_national {
 
     public void setTk_natinoalId(String tk_natinoalId) {
         this.tk_natinoalId = tk_natinoalId;
+        Id = tk_natinoalId;
     }
 
     public String getTk_code() {
@@ -32,5 +58,6 @@ public class tk_national {
 
     public void setTk_name(String tk_name) {
         this.tk_name = tk_name;
+        Name = tk_name;
     }
 }

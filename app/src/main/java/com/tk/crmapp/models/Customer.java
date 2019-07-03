@@ -111,17 +111,12 @@ public class Customer implements Serializable {
         this.tk_sales_channel = tk_sales_channel;
     }
 
-    public String getTk_prefer() {
+    public tk_prefer getTk_prefer() {
         return tk_prefer;
     }
 
-    public void setTk_prefer(String tk_prefer) {
-        if(tk_prefer.indexOf("{\"")>=0) {
-            JSONObject jsonObject = (JSONObject) JSONObject.parseObject(tk_prefer);
-            this.tk_prefer = jsonObject.getString("Name");
-        }
-        else
-            this.tk_prefer = tk_prefer;
+    public void setTk_prefer(tk_prefer tk_prefer) {
+        this.tk_prefer = tk_prefer;
     }
 
     public String getTk_income() {
@@ -137,29 +132,21 @@ public class Customer implements Serializable {
             this.tk_income = tk_income;;
     }
 
-    public String getTk_org_tp() {
+    public BusinessUnit getTk_org_tp() {
         return tk_org_tp;
     }
 
-    public void setTk_org_tp(String tk_org_tp) {
-        if(tk_org_tp.indexOf("{\"")>=0) {
-            JSONObject jsonObject = (JSONObject) JSONObject.parseObject(tk_org_tp);
-            this.tk_org_tp = jsonObject.getString("Name");
-        }
-        else
+    public void setTk_org_tp(BusinessUnit tk_org_tp) {
+
             this.tk_org_tp = tk_org_tp;
     }
 
-    public String getTk_personal_national() {
+    public tk_national getTk_personal_national() {
         return tk_personal_national;
     }
 
-    public void setTk_personal_national(String tk_personal_national) {
-        if(tk_personal_national.indexOf("{\"")>=0) {
-            JSONObject jsonObject = (JSONObject) JSONObject.parseObject(tk_personal_national);
-            this.tk_personal_national = jsonObject.getString("Name");
-        }
-        else
+    public void setTk_personal_national(tk_national tk_personal_national) {
+
             this.tk_personal_national = tk_personal_national;
     }
 
@@ -190,9 +177,20 @@ public class Customer implements Serializable {
     private String tk_bxph;//保險偏好
     private String tk_tzph;//投資偏好
     private String tk_sales_channel;//銷售渠道
-    private String tk_prefer;//服务偏好
+    private tk_prefer tk_prefer;//服务偏好
     private String tk_income;//收入
-    private String tk_org_tp;//所有部門
-    private String tk_personal_national;
+    private BusinessUnit tk_org_tp;//所有部門
+    private tk_national tk_personal_national;
     private String tk_x_occupation_tp;//職業
+
+    public String outputjson()
+    {
+        JSONObject jrootobj = new JSONObject();
+        jrootobj.put("Name",Name);
+        JSONObject degree_tpobj = new JSONObject();
+        degree_tpobj.put("LogicalName","tk_degree_tp");
+        degree_tpobj.put("Id",tk_degree_tp.getId());
+        jrootobj.put("tk_degree_tp",degree_tpobj);
+        return jrootobj.toJSONString();
+    }
 }
